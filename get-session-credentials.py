@@ -56,8 +56,8 @@ move(creds, creds_bak)
 
 # write new credentials file
 credfile = open(creds, 'w')
-credfile.write('[default]\n')
-credfile.write('aws_access_key_id = {}\n'.format(sts_response['Credentials']['AccessKeyId']))
-credfile.write('aws_secret_access_key = {}\n'.format(sts_response['Credentials']['SecretAccessKey']))
-credfile.write('aws_session_token = {}'.format(sts_response['Credentials']['SessionToken']))
+credfile.write('[default]\n' +
+               'aws_access_key_id = {}\n'.format(sts_response['Credentials']['AccessKeyId']) +
+               'aws_secret_access_key = {}\n'.format(sts_response['Credentials']['SecretAccessKey']) +
+               'aws_session_token = {}'.format(sts_response['Credentials']['SessionToken']))
 credfile.close()
