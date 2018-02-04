@@ -15,7 +15,7 @@ if os.path.isfile(creds_bak):
 username = input('Input your AWS Username: ')
 
 if len(username) < 1:
-    print('Username cannot be empty! Exiting...')
+    print('\nUsername cannot be empty! Exiting...')
     exit(1)
 
 # instantiate client and get device ARN
@@ -25,31 +25,31 @@ try:
     mfa_arn = iam_response['MFADevices'][0]['SerialNumber']
 except ClientError as ce:
     if ce.response['Error']['Code'] == 'NoSuchEntity':
-        print('Username does not exist! Exiting...')
+        print('\nUsername does not exist! Exiting...')
         exit(1)
     else:
-        print('Unknown error. Exiting...')
+        print('\nUnknown error. Exiting...')
         exit(1)
 
 # get MFA code
 mfa_code = input('Input your MFA Token: ')
 
 if len(mfa_code) != 6:
-    print('Incorrect MFA Length. Exiting...')
+    print('\nIncorrect MFA Length. Exiting...')
     exit(1)
 
 # instantiate client and get session credentials and token
 try:
     sts_client = boto3.client('sts')
     sts_response = sts_client.get_session_token(SerialNumber=mfa_arn, TokenCode=mfa_code)
-    print('Session Token successful!')
+    print('\nSession Token successful!')
 
 except ClientError as ce:
     if ce.response['Error']['Code'] == 'AccessDenied':
-        print('Incorrect MFA Code. Exiting...')
+        print('\nIncorrect MFA Code. Exiting...')
         exit(1)
     else:
-        print('Unknown error. Exiting...')
+        print('\nUnknown error. Exiting...')
 
 # backup credentials file and write new session token credentials
 move(creds, creds_bak)
